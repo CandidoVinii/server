@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  crafty:
+    build:
+      context: ./minecraft/crafty-4
+      dockerfile: Dockerfile
+    container_name: crafty-server
+    restart: always
+    ports:
+      # Painel de controle HTTPS
+      - "8443:8443"
+      # Servidor Minecraft
+      - "25565:25565"
+    volumes:
+      # Configurações
+      - ./minecraft/crafty-4/config:/opt/crafty/config
+      # Servidores
+      - ./minecraft/crafty-4/servers:/opt/crafty/servers
+      # Backups
+      - ./minecraft/crafty-4/backups:/opt/crafty/backups
+      # Logs
+      - ./minecraft/crafty-4/logs:/opt/crafty/logs
+    environment:
+      - TZ=America/Sao_Paulo  # Ajuste para seu timezone
+    # Limites de recurso (opcional)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '4'
+    #       memory: 8G
+    #     reservations:
+    #       cpus: '2'
+    #       memory: 4G
+
+# Para usar este arquivo:
+# docker-compose up -d        # Iniciar
+# docker-compose logs -f      # Ver logs
+# docker-compose down         # Parar
+# docker-compose restart      # Reiniciar
